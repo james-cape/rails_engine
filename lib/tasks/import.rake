@@ -1,6 +1,5 @@
 require 'csv'
 
-
 namespace :import do
   desc "Imports specified CSV files from /lib/data"
   task data: :environment do
