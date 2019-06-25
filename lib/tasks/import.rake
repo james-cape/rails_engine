@@ -2,10 +2,11 @@ require 'csv'
 
 
 namespace :import do
-  desc "TODO"
+  desc "Imports specified CSV files from /lib/data"
   task data: :environment do
     `rake db:{drop,create,migrate}`
-    
+    puts "Wiping database"
+
     CSV.foreach('./lib/data/customers.csv', headers: true) do |row|
       Customer.create(row.to_h)
     end
