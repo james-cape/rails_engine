@@ -9,6 +9,16 @@ describe "Customers API" do
     expect(response).to be_successful
 
     customers = JSON.parse(response.body)
-    expect(customers.count).to eq(3)
+    expect(customers["data"].count).to eq(3)
+  end
+
+  it "gets a customer by id" do
+    id = create(:customer).id
+
+    get "/api/v1/customers/#{id}.json"
+
+    customer = JSON.parse(response.body)
+    expect(response).to be_successful
+    expect(customer["data"]["id"].to_i).to eq(id)
   end
 end
