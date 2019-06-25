@@ -20,8 +20,8 @@ describe "Invoices API" do
 
     get "/api/v1/invoices/#{id}.json"
 
-    # expect(response).to be_successful
-    # invoice = JSON.parse(response.body)
-    # expect(invoice["data"]["id"].to_i).to eq(id)
+    expect(response).to be_successful
+    invoice = JSON.parse(response.body)
+    expect(invoice["data"]["id"].to_i).to eq(id)
   end
 end
