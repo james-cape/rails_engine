@@ -106,4 +106,26 @@ describe "Invoices API" do
     assert_equal invoice_item_2.id, invoice_items[1]["id"].to_i
     assert_equal invoice_item_3.id, invoice_items[2]["id"].to_i
   end
+
+  it "gets an invoice's customer" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    item_1 = create(:item, merchant: merchant_1)
+    item_2 = create(:item, merchant: merchant_1)
+    item_3 = create(:item, merchant: merchant_1)
+    item_4 = create(:item, merchant: merchant_1)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_2)
+
+    get "/api/v1/invoices/#{invoice_1.id}/customer"
+
+    customer = JSON.parse(response.body)
+    expect(response).to be_successful
+    assert_equal 1, customer.count
+    assert_equal customer_1.id, customer["data"]["id"].to_i
+  end
 end
