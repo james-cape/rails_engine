@@ -9,11 +9,11 @@ Rails.application.routes.draw do
       end
 
       # Customer Relationships
-      get '/customers/:id/invoices', to: 'customers/invoices#index'
+      get '/customers/:id/invoices',     to: 'customers/invoices#index'
       get '/customers/:id/transactions', to: 'customers/transactions#index'
 
       # Invoice_item Relationships
-      get '/invoice_items/:id/item', to: 'invoice_items/items#show'
+      get '/invoice_items/:id/item',    to: 'invoice_items/items#show'
       get '/invoice_items/:id/invoice', to: 'invoice_items/invoices#show'
 
       # Invoice Relationships
@@ -22,6 +22,18 @@ Rails.application.routes.draw do
       get '/invoices/:id/invoice_items', to: 'invoices/invoice_items#index'
       get '/invoices/:id/customer',      to: 'invoices/customers#show'
       get '/invoices/:id/merchant',      to: 'invoices/merchants#show'
+
+      # Item Relationships
+      get '/items/:id/invoice_items', to: 'items/invoice_items#index'
+      get '/items/:id/merchant',     to: 'items/merchants#show'
+
+      # Merchant Relationships
+      get '/merchants/:id/items',    to: 'merchants/items#index'
+      get '/merchants/:id/invoices', to: 'merchants/invoices#index'
+
+      # Transaction Relationships
+      get '/transactions/:id/invoice',    to: 'transactions/invoices#show'
+
 
 
 
