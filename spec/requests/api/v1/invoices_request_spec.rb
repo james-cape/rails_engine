@@ -117,10 +117,10 @@ describe "Invoices API" do
 
     get "/api/v1/invoices/#{invoice_1.id}/customer"
 
-    customer = JSON.parse(response.body)
+    customer = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 1, customer.count
-    assert_equal customer_1.id, customer["data"]["id"].to_i
+    assert_instance_of Hash, customer
+    assert_equal customer_1.id, customer["id"].to_i
   end
 
   it "gets an invoice's merchant" do
@@ -133,9 +133,9 @@ describe "Invoices API" do
 
     get "/api/v1/invoices/#{invoice_1.id}/merchant"
 
-    merchant = JSON.parse(response.body)
+    merchant = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 1, merchant.count
-    assert_equal merchant_1.id, merchant["data"]["id"].to_i
+    assert_instance_of Hash, merchant
+    assert_equal merchant_1.id, merchant["id"].to_i
   end
 end

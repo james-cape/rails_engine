@@ -51,10 +51,10 @@ describe "Invoice_items API" do
 
     get "/api/v1/invoice_items/#{invoice_item_1.id}/invoice"
 
-    invoice = JSON.parse(response.body)
+    invoice = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 1, invoice.count
-    assert_equal invoice_1.id, invoice["data"]["id"].to_i
+    assert_instance_of Hash, invoice
+    assert_equal invoice_1.id, invoice["id"].to_i
   end
 
   it "gets a single invoice_item's item" do
@@ -70,9 +70,9 @@ describe "Invoice_items API" do
 
     get "/api/v1/invoice_items/#{invoice_item_1.id}/item"
 
-    item = JSON.parse(response.body)
+    item = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 1, item.count
-    assert_equal item_1.id, item["data"]["id"].to_i
+    assert_instance_of Hash, item
+    assert_equal item_1.id, item["id"].to_i
   end
 end
