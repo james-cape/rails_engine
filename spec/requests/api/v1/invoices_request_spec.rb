@@ -112,13 +112,7 @@ describe "Invoices API" do
     customer_2 = create(:customer)
     merchant_1 = create(:merchant)
 
-    item_1 = create(:item, merchant: merchant_1)
-    item_2 = create(:item, merchant: merchant_1)
-    item_3 = create(:item, merchant: merchant_1)
-    item_4 = create(:item, merchant: merchant_1)
-
     invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
-
     invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_2)
 
     get "/api/v1/invoices/#{invoice_1.id}/customer"
@@ -127,5 +121,21 @@ describe "Invoices API" do
     expect(response).to be_successful
     assert_equal 1, customer.count
     assert_equal customer_1.id, customer["data"]["id"].to_i
+  end
+
+  it "gets an invoice's merchant" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1)
+
+    get "/api/v1/invoices/#{invoice_1.id}/merchant"
+
+    merchant = JSON.parse(response.body)
+    expect(response).to be_successful
+    assert_equal 1, merchant.count
+    assert_equal merchant_1.id, merchant["data"]["id"].to_i
   end
 end
