@@ -3,10 +3,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
 
-      namespace :merchants do
-        # resources :most_revenue, only: [:index]
-        get '/most_revenue', to: 'most_revenue#index'
-      end
+      # namespace :merchants do
+      #   # resources :most_revenue, only: [:index]
+      #   get '/most_revenue', to: 'most_revenue#index'
+      # end
 
       # Customer Relationships
       get '/customers/:id/invoices',     to: 'customers/invoices#index'
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       # Merchant Relationships
       get '/merchants/:id/items',    to: 'merchants/items#index'
       get '/merchants/:id/invoices', to: 'merchants/invoices#index'
+      get '/merchants/most_revenue', to: 'merchants/most_revenue#index'
 
       # Transaction Relationships
       get '/transactions/:id/invoice',    to: 'transactions/invoices#show'
