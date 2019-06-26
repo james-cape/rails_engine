@@ -24,4 +24,57 @@ describe "Invoices API" do
     invoice = JSON.parse(response.body)
     expect(invoice["data"]["id"].to_i).to eq(id)
   end
+
+  it "gets all of an invoice's transactions" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    transaction_1 = create(:transaction, invoice: invoice_1)
+    transaction_2 = create(:transaction, invoice: invoice_1)
+    transaction_3 = create(:transaction, invoice: invoice_1)
+    transaction_4 = create(:transaction, invoice: invoice_2)
+    transaction_5 = create(:transaction, invoice: invoice_2)
+
+    get "/api/v1/invoices/#{invoice_1.id}/transactions"
+
+    transactions = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    assert_equal 3, transactions.count
+    assert_equal transaction_1.id, transactions[0]["id"].to_i
+    assert_equal transaction_2.id, transactions[1]["id"].to_i
+    assert_equal transaction_3.id, transactions[2]["id"].to_i
+  end
+
+  it "gets all of an invoice's items" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    item_1 = create(:item, merchant: merchant_1)
+    item_2 = create(:item, merchant: merchant_1)
+    item_3 = create(:item, merchant: merchant_1)
+    item_4 = create(:item, merchant: merchant_1)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    create(:invoice_item, invoice: invoice_1, item: item_1)
+    create(:invoice_item, invoice: invoice_1, item: item_2)
+    create(:invoice_item, invoice: invoice_1, item: item_2)
+
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    create(:invoice_item, invoice: invoice_2, item: item_3)
+    create(:invoice_item, invoice: invoice_2, item: item_3)
+    create(:invoice_item, invoice: invoice_2, item: item_4)
+
+    get "/api/v1/invoices/#{invoice_1.id}/items"
+
+    items = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    assert_equal 3, items.count
+    assert_equal item_1.id, items[0]["id"].to_i
+    assert_equal item_2.id, items[1]["id"].to_i
+    assert_equal item_2.id, items[2]["id"].to_i
+  end
 end
