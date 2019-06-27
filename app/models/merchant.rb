@@ -17,6 +17,7 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: "success"})
     .group(:id)
     .order('total_items DESC')
-    .limit(merchant_limit)
+    .order(:id)
+    .limit(merchant_limit).to_a.reverse
   end
 end
