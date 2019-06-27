@@ -23,11 +23,13 @@ Rails.application.routes.draw do
       get '/items/:id/merchant',      to: 'items/merchants#show'
 
       # Merchant Relationships
-      get '/merchants/:id/items',    to: 'merchants/items#index'
-      get '/merchants/:id/invoices', to: 'merchants/invoices#index'
-      get '/merchants/most_revenue', to: 'merchants/most_revenue#index'
-      get '/merchants/most_items',   to: 'merchants/most_items#index'
-      get '/merchants/revenue',      to: 'merchants/revenue#show'
+      get '/merchants/:id/items',             to: 'merchants/items#index'
+      get '/merchants/:id/invoices',          to: 'merchants/invoices#index'
+      get '/merchants/most_revenue',          to: 'merchants/most_revenue#index'
+      get '/merchants/most_items',            to: 'merchants/most_items#index'
+      get '/merchants/revenue',               to: 'merchants/revenue#show'
+      get '/merchants/:id/favorite_customer', to: 'merchants/favorite_customer#show'
+   # "/api/v1/merchants/#{merchant_id_one}/favorite_customer"
 
       # Transaction Relationships
       get '/transactions/:id/invoice',    to: 'transactions/invoices#show'

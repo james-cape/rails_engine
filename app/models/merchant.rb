@@ -20,4 +20,17 @@ class Merchant < ApplicationRecord
     .order(:id)
     .limit(merchant_limit).to_a.reverse
   end
+
+  def favorite_customer
+    # customer who has conducted the most total number of successful transactions.
+    # merchants to Invoices
+    # invoices to customers
+    # invoices to transactions
+    select('customers.*, COUNT(transactions.id) AS total_transactions')
+    .joins(invoices: [:customers, :transactions])
+    .where(transactions: {result: "success"})
+    .group('customers.id')
+    .order('total_transactions DESC')
+    .first
+  end
 end
