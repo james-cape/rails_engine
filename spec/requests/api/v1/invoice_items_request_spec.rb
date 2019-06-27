@@ -37,4 +37,42 @@ describe "Invoice_items API" do
     expect(response).to be_successful
     expect(invoice_item["data"]["id"].to_i).to eq(id)
   end
+
+  it "gets a single invoice_item's invoice" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1)
+
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1)
+
+    get "/api/v1/invoice_items/#{invoice_item_1.id}/invoice"
+
+    invoice = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    assert_instance_of Hash, invoice
+    assert_equal invoice_1.id, invoice["id"].to_i
+  end
+
+  it "gets a single invoice_item's item" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    item_1 = create(:item, merchant: merchant_1)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1)
+
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1)
+
+    get "/api/v1/invoice_items/#{invoice_item_1.id}/item"
+
+    item = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    assert_instance_of Hash, item
+    assert_equal item_1.id, item["id"].to_i
+  end
 end
