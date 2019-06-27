@@ -8,7 +8,7 @@ class Invoice < ApplicationRecord
   def self.revenue(date)
     select('SUM(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
     .joins(:invoice_items, :transactions)
-    .where("DATE_TRUNC('day', invoices.created_at) = ?", date)
+    .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)
     .where(transactions: {result: "success"})[0]
   end
 end
