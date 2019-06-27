@@ -59,4 +59,35 @@ describe "Merchants API" do
     assert_equal invoice_2.id, invoices[1]["id"].to_i
     assert_equal invoice_3.id, invoices[2]["id"].to_i
   end
+
+  it "gets a merchant's favorite customer by succussful transactions" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    customer_3 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_2)
+    invoice_4 = create(:invoice, merchant: merchant_1, customer: customer_3)
+    invoice_5 = create(:invoice, merchant: merchant_1, customer: customer_3)
+    invoice_6 = create(:invoice, merchant: merchant_1, customer: customer_3)
+    invoice_7 = create(:invoice, merchant: merchant_2, customer: customer_2)
+
+    create(:transaction, invoice: invoice_1, result: "success")
+    create(:transaction, invoice: invoice_2, result: "success")
+    create(:transaction, invoice: invoice_3, result: "success")
+    create(:transaction, invoice: invoice_4, result: "failed")
+    create(:transaction, invoice: invoice_5, result: "failed")
+    create(:transaction, invoice: invoice_6, result: "failed")
+    create(:transaction, invoice: invoice_7, result: "success")
+
+    get "/api/v1/merchants/#{merchant_1.id}/favorite_customer"
+
+    favorite_customer = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    assert_instance_of Hash, favorite_customer
+    assert_equal customer_1.id, favorite_customer["id"].to_i
+  end
 end
