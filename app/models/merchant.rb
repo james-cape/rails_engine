@@ -22,14 +22,11 @@ class Merchant < ApplicationRecord
   end
 
   def favorite_customer
-    # customer who has conducted the most total number of successful transactions.
-    # merchants to Invoices
-    # invoices to customers
-    # invoices to transactions
-    select('customers.*, COUNT(transactions.id) AS total_transactions')
-    .joins(invoices: [:customers, :transactions])
+    Customer.select('customers.*, COUNT(transactions.id) AS total_transactions')
+    .joins(invoices: :transactions)
     .where(transactions: {result: "success"})
-    .group('customers.id')
+    .where("invoices.merchant_id = ?", self.id)
+    .group(:id)
     .order('total_transactions DESC')
     .first
   end
