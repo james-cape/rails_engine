@@ -30,4 +30,20 @@ class Merchant < ApplicationRecord
     .order('total_transactions DESC')
     .first
   end
+
+  def customers_with_pending_invoices ### Boss Mode
+    # Customer.joins(invoices: :transactions)
+    # .where(transactions: {result: "failed"})
+    # .where("invoices.merchant_id = ?", self.id)
+    # .distinct
+    # customers_with_failing_transactions = Customer.select('customers.*')
+    # .joins(invoices: :transactions)
+    # .where.not(transactions: {result: "success"})
+    # .where("invoices.merchant_id = ?", self.id)
+    # .distinct.to_a
+    #
+    # Invoice.joins(:transactions)
+    # .where.not(transactions: {result: "success"})
+    # .where()
+  end
 end

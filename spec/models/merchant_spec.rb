@@ -102,5 +102,31 @@ RSpec.describe Merchant, type: :model do
 
       assert_equal customer_1, merchant_1.favorite_customer
     end
+
+    it "retrieves a merchant's customers with pending orders" do ### Boss Mode
+#       customer_1 = create(:customer)
+#       customer_2 = create(:customer)
+#       customer_3 = create(:customer)
+#       merchant_1 = create(:merchant)
+#       merchant_2 = create(:merchant)
+#
+#       invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+#       invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+#       invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_2)
+#       invoice_4 = create(:invoice, merchant: merchant_1, customer: customer_3)
+#       invoice_5 = create(:invoice, merchant: merchant_1, customer: customer_3)
+#       invoice_6 = create(:invoice, merchant: merchant_1, customer: customer_3)
+#       invoice_7 = create(:invoice, merchant: merchant_2, customer: customer_2)
+#
+#       create(:transaction, invoice: invoice_1, result: "failed")
+#       create(:transaction, invoice: invoice_2, result: "success")
+#       create(:transaction, invoice: invoice_3, result: "success")
+#       create(:transaction, invoice: invoice_4, result: "failed")
+#       create(:transaction, invoice: invoice_5, result: "failed")
+#       create(:transaction, invoice: invoice_6, result: "failed")
+#       create(:transaction, invoice: invoice_7, result: "failed")
+# # require 'pry'; binding.pry
+#       assert_equal [customer_1, customer_2], merchant_1.customers_with_pending_invoices
+    end
   end
 end

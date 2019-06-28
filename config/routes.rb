@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       # Customer Relationships
       get '/customers/:id/invoices',     to: 'customers/invoices#index'
       get '/customers/:id/transactions', to: 'customers/transactions#index'
+      get '/customers/find', to: 'customers/search#show'
+      get '/customers/find_all', to: 'customers/search#index'
 
       # Invoice_item Relationships
       get '/invoice_items/:id/item',    to: 'invoice_items/items#show'
@@ -29,7 +31,7 @@ Rails.application.routes.draw do
       get '/merchants/most_items',            to: 'merchants/most_items#index'
       get '/merchants/revenue',               to: 'merchants/revenue#show'
       get '/merchants/:id/favorite_customer', to: 'merchants/favorite_customer#show'
-   # "/api/v1/merchants/#{merchant_id_one}/favorite_customer"
+      get '/merchants/:id/customers_with_pending_invoices', to: 'merchants/customers_with_pending_invoices#index'
 
       # Transaction Relationships
       get '/transactions/:id/invoice',    to: 'transactions/invoices#show'
