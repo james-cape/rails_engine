@@ -6,8 +6,8 @@ Rails.application.routes.draw do
       # Customer Relationships
       get '/customers/:id/invoices',     to: 'customers/invoices#index'
       get '/customers/:id/transactions', to: 'customers/transactions#index'
-      get '/customers/find', to: 'customers/search#show'
-      get '/customers/find_all', to: 'customers/search#index'
+      get '/customers/find',             to: 'customers/search#show'
+      get '/customers/find_all',         to: 'customers/search#index'
 
       # Invoice_item Relationships
       get '/invoice_items/:id/item',    to: 'invoice_items/items#show'
