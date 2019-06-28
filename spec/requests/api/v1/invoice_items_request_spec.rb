@@ -133,26 +133,26 @@ describe "Invoice_items API" do
     expect(invoice_item["quantity"]).to eq(invoice_item_1.quantity)
   end
 
-  xit "finds invoice_item by unit_price" do
+  it "finds invoice_item by unit_price" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
 
     invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
-    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 255)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 23445)
 
     invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
-    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, unit_price: 210)
-
-    get "/api/v1/invoice_items/find?unit_price=#{invoice_item_1.unit_price}"
+    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, unit_price: 15888)
+    test_price = "234.45"
+    get "/api/v1/invoice_items/find?unit_price=#{test_price}"
 
     invoice_item = JSON.parse(response.body)["data"]["attributes"]
     expect(response).to be_successful
     expect(invoice_item.class).to eq(Hash)
-    expect(invoice_item["unit_price"]).to eq(invoice_item_1.unit_price)
+    expect(invoice_item["unit_price"]).to eq((invoice_item_1.unit_price.to_f / 100).to_s)
   end
 
-  xit "finds invoice_item by created_at" do
+  it "finds invoice_item by created_at" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
@@ -168,10 +168,10 @@ describe "Invoice_items API" do
     invoice_item = JSON.parse(response.body)["data"]["attributes"]
     expect(response).to be_successful
     expect(invoice_item.class).to eq(Hash)
-    expect(invoice_item["created_at"]).to eq(invoice_item_1.created_at)
+    expect(invoice_item["id"]).to eq(invoice_item_1.id)
   end
 
-  xit "finds invoice_item by updated_at" do
+  it "finds invoice_item by updated_at" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
@@ -187,7 +187,7 @@ describe "Invoice_items API" do
     invoice_item = JSON.parse(response.body)["data"]["attributes"]
     expect(response).to be_successful
     expect(invoice_item.class).to eq(Hash)
-    expect(invoice_item["updated_at"]).to eq(invoice_item_1.updated_at)
+    expect(invoice_item["id"]).to eq(invoice_item_1.id)
   end
 
   it "finds all invoice_items by id" do
@@ -275,7 +275,7 @@ describe "Invoice_items API" do
     expect(invoice_items[1]["attributes"]["quantity"]).to eq(invoice_item_1.quantity)
   end
 
-  xit "finds all invoice_items by unit_price" do
+  it "finds all invoice_items by unit_price" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
@@ -284,19 +284,20 @@ describe "Invoice_items API" do
     invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
     invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
 
-    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 105)
-    invoice_item_2 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 105)
-    invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item_2, unit_price: 205)
+    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 10505)
+    invoice_item_2 = create(:invoice_item, invoice: invoice_1, item: item_1, unit_price: 10505)
+    invoice_item_3 = create(:invoice_item, invoice: invoice_2, item: item_2, unit_price: 20505)
+    test_price = "105.05"
 
-    get "/api/v1/invoice_items/find_all?unit_price=#{invoice_item_1.unit_price}"
+    get "/api/v1/invoice_items/find_all?unit_price=#{test_price}"
     invoice_items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(invoice_items.count).to eq(2)
-    expect(invoice_items[0]["attributes"]["unit_price"]).to eq(invoice_item_1.unit_price)
-    expect(invoice_items[1]["attributes"]["unit_price"]).to eq(invoice_item_1.unit_price)
+    expect(invoice_items[0]["attributes"]["unit_price"]).to eq((invoice_item_1.unit_price.to_f / 100).to_s)
+    expect(invoice_items[1]["attributes"]["unit_price"]).to eq((invoice_item_1.unit_price.to_f / 100).to_s)
   end
 
-  xit "finds all invoice_items by created_at" do
+  it "finds all invoice_items by created_at" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
@@ -313,11 +314,11 @@ describe "Invoice_items API" do
     invoice_items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(invoice_items.count).to eq(2)
-    expect(invoice_items[0]["attributes"]["created_at"]).to eq(invoice_item_1.created_at)
-    expect(invoice_items[1]["attributes"]["created_at"]).to eq(invoice_item_1.created_at)
+    expect(invoice_items[0]["attributes"]["id"]).to eq(invoice_item_1.id)
+    expect(invoice_items[1]["attributes"]["id"]).to eq(invoice_item_2.id)
   end
 
-  xit "finds all invoice_items by updated_at" do
+  it "finds all invoice_items by updated_at" do
     customer_1 = create(:customer)
     merchant_1 = create(:merchant)
     item_1 = create(:item, merchant: merchant_1)
@@ -334,8 +335,8 @@ describe "Invoice_items API" do
     invoice_items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(invoice_items.count).to eq(2)
-    expect(invoice_items[0]["attributes"]["updated_at"]).to eq(invoice_item_1.updated_at)
-    expect(invoice_items[1]["attributes"]["updated_at"]).to eq(invoice_item_1.updated_at)
+    expect(invoice_items[0]["attributes"]["id"]).to eq(invoice_item_1.id)
+    expect(invoice_items[1]["attributes"]["id"]).to eq(invoice_item_2.id)
   end
 
 end

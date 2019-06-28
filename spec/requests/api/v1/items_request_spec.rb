@@ -114,19 +114,20 @@ describe "Items API" do
     expect(item["attributes"]["description"]).to eq(item_1.description)
   end
 
-  xit "gets item by unit_price" do
+  it "gets item by unit_price" do
     merchant_1 = create(:merchant)
 
-    item_1 = create(:item, merchant: merchant_1, unit_price: "15563")
-    item_2 = create(:item, merchant: merchant_1, unit_price: "25563")
-    item_3 = create(:item, merchant: merchant_1, unit_price: "35563")
+    item_1 = create(:item, merchant: merchant_1, unit_price: "23445")
+    item_2 = create(:item, merchant: merchant_1, unit_price: "74747")
+    item_3 = create(:item, merchant: merchant_1, unit_price: "90234")
+    test_price = "234.45"
 
-    get "/api/v1/items/find?unit_price=#{item_1.unit_price}"
+    get "/api/v1/items/find?unit_price=#{test_price}"
 
     item = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(item.class).to eq(Hash)
-    expect(item["attributes"]["unit_price"]).to eq(item_1.unit_price)
+    expect(item["attributes"]["unit_price"]).to eq((item_1.unit_price.to_f / 100).to_s)
   end
 
   it "gets item by merchant_id" do
@@ -227,20 +228,21 @@ describe "Items API" do
     expect(item[1]["attributes"]["description"]).to eq(item_1.description)
   end
 
-  xit "gets all items by unit_price" do
+  it "gets all items by unit_price" do
     merchant_1 = create(:merchant)
 
-    item_1 = create(:item, merchant: merchant_1, unit_price: "16563")
-    item_2 = create(:item, merchant: merchant_1, unit_price: "15563")
+    item_1 = create(:item, merchant: merchant_1, unit_price: "23445")
+    item_2 = create(:item, merchant: merchant_1, unit_price: "23445")
     item_3 = create(:item, merchant: merchant_1, unit_price: "14563")
+    test_price = "234.45"
 
-    get "/api/v1/items/find_all?unit_price=#{item_1.unit_price}"
+    get "/api/v1/items/find_all?unit_price=#{test_price}"
 
     item = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(item.count).to eq(2)
-    expect(item[0]["attributes"]["unit_price"]).to eq(item_1.unit_price)
-    expect(item[1]["attributes"]["unit_price"]).to eq(item_1.unit_price)
+    expect(item[0]["attributes"]["unit_price"]).to eq((item_1.unit_price.to_f / 100).to_s)
+    expect(item[1]["attributes"]["unit_price"]).to eq((item_1.unit_price.to_f / 100).to_s)
   end
 
   it "gets all items by merchant_id" do
