@@ -71,13 +71,24 @@ describe "Customers API" do
     customer_2 = create(:customer)
     customer_3 = create(:customer)
 
-    # expected_id = Customer.first.id
-
     get "/api/v1/customers/find?id=#{customer_1.id}"
 
     customer = JSON.parse(response.body)["data"]
 
     expect(response).to be_successful
     expect(customer["id"].to_i).to eq(customer_1.id)
+  end
+
+  it "finds customer by first_name" do
+    customer_1 = create(:customer, first_name: "name_1")
+    customer_2 = create(:customer, first_name: "name_2")
+    customer_3 = create(:customer, first_name: "name_3")
+
+    get "/api/v1/customers/find?id=#{customer_1.first_name}"
+
+    customer = JSON.parse(response.body)["data"]
+
+    expect(response).to be_successful
+    expect(customer["first_name"]).to eq(customer_1.first_name)
   end
 end
