@@ -66,21 +66,18 @@ describe "Customers API" do
     assert_equal transactions["data"][1]["id"].to_i, transaction_2.id
   end
 
-  def customer_germaine #Not a test
-    {
-      "id"         => 479,
-      "first_name" => "Germaine",
-      "last_name"  => "Kirlin",
-      "created_at" => "2012-03-27T14:56:04.000Z",
-      "updated_at" => "2012-03-27T14:56:04.000Z"
-    }
-  end
+  it "finds customer by id" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    customer_3 = create(:customer)
 
-  it "gets a single customer's transactions" do
-    get "/api/v1/customers/find?id=#{customer_germaine['id']}"
+    # expected_id = Customer.first.id
 
-    expected_attributes.each do |attribute|
-      assert_equal customer_germaine[attribute], customer[attribute]
-    end
+    get "/api/v1/customers/find?id=#{customer_1.id}"
+
+    customer = JSON.parse(response.body)["data"]
+
+    expect(response).to be_successful
+    expect(customer["id"].to_i).to eq(customer_1.id)
   end
 end
