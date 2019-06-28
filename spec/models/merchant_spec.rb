@@ -125,7 +125,6 @@ RSpec.describe Merchant, type: :model do
 #       create(:transaction, invoice: invoice_5, result: "failed")
 #       create(:transaction, invoice: invoice_6, result: "failed")
 #       create(:transaction, invoice: invoice_7, result: "failed")
-# # require 'pry'; binding.pry
 #       assert_equal [customer_1, customer_2], merchant_1.customers_with_pending_invoices
     end
   end
