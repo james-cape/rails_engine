@@ -44,12 +44,14 @@ describe "Items API" do
 
     get "/api/v1/items/#{item_1.id}/invoice_items"
 
-    invoice_items = JSON.parse(response.body)["data"]
+    invoice_items_unsorted = JSON.parse(response.body)["data"]
+    invoice_items_sorted = invoice_items_unsorted.sort_by { |element| element["id"] }
+
     expect(response).to be_successful
-    assert_equal 3, invoice_items.count
-    assert_equal invoice_item_1.id, invoice_items[0]["id"].to_i
-    assert_equal invoice_item_2.id, invoice_items[1]["id"].to_i
-    assert_equal invoice_item_6.id, invoice_items[2]["id"].to_i
+    assert_equal 3, invoice_items_sorted.count
+    assert_equal invoice_item_1.id, invoice_items_sorted[0]["id"].to_i
+    assert_equal invoice_item_2.id, invoice_items_sorted[1]["id"].to_i
+    assert_equal invoice_item_6.id, invoice_items_sorted[2]["id"].to_i
   end
 
   it "gets an item's merchant" do

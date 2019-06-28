@@ -3,14 +3,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
 
-      # namespace :merchants do
-      #   # resources :most_revenue, only: [:index]
-      #   get '/most_revenue', to: 'most_revenue#index'
-      # end
-
       # Customer Relationships
       get '/customers/:id/invoices',     to: 'customers/invoices#index'
       get '/customers/:id/transactions', to: 'customers/transactions#index'
+      get '/customers/find', to: 'customers/search#show'
+      get '/customers/find_all', to: 'customers/search#index'
 
       # Invoice_item Relationships
       get '/invoice_items/:id/item',    to: 'invoice_items/items#show'
@@ -25,22 +22,21 @@ Rails.application.routes.draw do
 
       # Item Relationships
       get '/items/:id/invoice_items', to: 'items/invoice_items#index'
-      get '/items/:id/merchant',     to: 'items/merchants#show'
+      get '/items/:id/merchant',      to: 'items/merchants#show'
 
       # Merchant Relationships
-      get '/merchants/:id/items',    to: 'merchants/items#index'
-      get '/merchants/:id/invoices', to: 'merchants/invoices#index'
-      get '/merchants/most_revenue', to: 'merchants/most_revenue#index'
+      get '/merchants/:id/items',             to: 'merchants/items#index'
+      get '/merchants/:id/invoices',          to: 'merchants/invoices#index'
+      get '/merchants/most_revenue',          to: 'merchants/most_revenue#index'
+      get '/merchants/most_items',            to: 'merchants/most_items#index'
+      get '/merchants/revenue',               to: 'merchants/revenue#show'
+      get '/merchants/:id/favorite_customer', to: 'merchants/favorite_customer#show'
+      get '/merchants/:id/customers_with_pending_invoices', to: 'merchants/customers_with_pending_invoices#index'
 
       # Transaction Relationships
       get '/transactions/:id/invoice',    to: 'transactions/invoices#show'
 
 
-
-
-      # resources :customers,     only: [:index, :show] do
-      #   resources :invoices, only: :index
-      # end
       resources :customers,     only: [:index, :show]
       resources :invoice_items, only: [:index, :show]
       resources :invoices,      only: [:index, :show]
