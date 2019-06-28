@@ -177,4 +177,204 @@ describe "Invoices API" do
     expect(response).to be_successful
     assert_equal expected_revenue, actual_revenue
   end
+
+  it "finds an invoice by id" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    get "/api/v1/invoices/find?id=#{invoice_1.id}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["id"].to_i).to eq(invoice_1.id)
+  end
+
+  it "finds an invoice by customer_id" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_2)
+
+    get "/api/v1/invoices/find?customer_id=#{invoice_1.customer_id}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["customer_id"].to_i).to eq(invoice_1.customer_id)
+  end
+
+  it "finds an invoice by merchant_id" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1)
+
+    get "/api/v1/invoices/find?merchant_id=#{invoice_1.merchant_id}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["merchant_id"].to_i).to eq(invoice_1.merchant_id)
+  end
+
+  it "finds an invoice by status" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, status: "success")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, status: "failed")
+
+    get "/api/v1/invoices/find?status=#{invoice_1.status}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["status"]).to eq(invoice_1.status)
+  end
+
+  xit "finds an invoice by created_at" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, created_at: "2013-03-09T08:57:21.000Z")
+
+    get "/api/v1/invoices/find?created_at=#{invoice_1.created_at}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["created_at"]).to eq(invoice_1.created_at)
+  end
+
+  xit "finds an invoice by updated_at" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, updated_at: "2013-03-09T08:57:21.000Z")
+
+    get "/api/v1/invoices/find?updated_at=#{invoice_1.updated_at}"
+
+    invoice = JSON.parse(response.body)["data"]["attributes"]
+    expect(response).to be_successful
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["updated_at"]).to eq(invoice_1.updated_at)
+  end
+
+  it "finds all invoices by id" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    get "/api/v1/invoices/find_all?id=#{invoice_1.id}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(1)
+    expect(invoices[0]["attributes"]["id"].to_i).to eq(invoice_1.id)
+  end
+
+  it "finds all invoices by customer_id" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    merchant_1 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_2)
+
+    get "/api/v1/invoices/find_all?customer_id=#{invoice_1.customer_id}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(2)
+    expect(invoices[0]["attributes"]["customer_id"].to_i).to eq(invoice_1.customer_id)
+    expect(invoices[1]["attributes"]["customer_id"].to_i).to eq(invoice_1.customer_id)
+  end
+
+  it "finds all invoices by merchant_id" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1)
+
+    get "/api/v1/invoices/find_all?merchant_id=#{invoice_1.merchant_id}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(2)
+    expect(invoices[0]["attributes"]["merchant_id"].to_i).to eq(invoice_1.merchant_id)
+    expect(invoices[1]["attributes"]["merchant_id"].to_i).to eq(invoice_1.merchant_id)
+  end
+
+  it "finds all invoices by status" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, status: "success")
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, status: "success")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, status: "failed")
+
+    get "/api/v1/invoices/find_all?status=#{invoice_1.status}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(2)
+    expect(invoices[0]["attributes"]["status"]).to eq(invoice_1.status)
+    expect(invoices[1]["attributes"]["status"]).to eq(invoice_1.status)
+  end
+
+  xit "finds all invoices by created_at" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, created_at: "2011-03-09T08:57:21.000Z")
+
+    get "/api/v1/invoices/find_all?created_at=#{invoice_1.created_at}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(2)
+    expect(invoices[0]["attributes"]["created_at"]).to eq(invoice_1.created_at)
+    expect(invoices[1]["attributes"]["created_at"]).to eq(invoice_1.created_at)
+  end
+
+  xit "finds all invoices by updated_at" do
+    customer_1 = create(:customer)
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-09T08:57:21.000Z")
+    invoice_2 = create(:invoice, merchant: merchant_2, customer: customer_1, updated_at: "2011-03-09T08:57:21.000Z")
+    date = "2012-03-09"
+    get "/api/v1/invoices/find_all?updated_at=#{date}"
+
+    invoices = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(invoices.count).to eq(2)
+    expect(invoices[0]["attributes"]["updated_at"]).to eq(invoice_1.updated_at)
+    expect(invoices[1]["attributes"]["updated_at"]).to eq(invoice_1.updated_at)
+  end
 end

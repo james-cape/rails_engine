@@ -21,10 +21,14 @@ Rails.application.routes.draw do
       get '/invoices/:id/invoice_items', to: 'invoices/invoice_items#index'
       get '/invoices/:id/customer',      to: 'invoices/customers#show'
       get '/invoices/:id/merchant',      to: 'invoices/merchants#show'
+      get '/invoices/find',              to: 'invoices/search#show'
+      get '/invoices/find_all',          to: 'invoices/search#index'
 
       # Item Relationships
       get '/items/:id/invoice_items', to: 'items/invoice_items#index'
       get '/items/:id/merchant',      to: 'items/merchants#show'
+      get '/items/find',              to: 'items/search#show'
+      get '/items/find_all',          to: 'items/search#index'
 
       # Merchant Relationships
       get '/merchants/:id/items',             to: 'merchants/items#index'
@@ -34,9 +38,13 @@ Rails.application.routes.draw do
       get '/merchants/revenue',               to: 'merchants/revenue#show'
       get '/merchants/:id/favorite_customer', to: 'merchants/favorite_customer#show'
       get '/merchants/:id/customers_with_pending_invoices', to: 'merchants/customers_with_pending_invoices#index'
+      get '/merchants/find',                  to: 'merchants/search#show'
+      get '/merchants/find_all',              to: 'merchants/search#index'
 
       # Transaction Relationships
-      get '/transactions/:id/invoice',    to: 'transactions/invoices#show'
+      get '/transactions/:id/invoice', to: 'transactions/invoices#show'
+      get '/transactions/find',        to: 'transactions/search#show'
+      get '/transactions/find_all',    to: 'transactions/search#index'
 
 
       resources :customers,     only: [:index, :show]
