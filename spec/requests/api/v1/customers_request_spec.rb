@@ -73,10 +73,10 @@ describe "Customers API" do
 
     get "/api/v1/customers/find?id=#{customer_1.id}"
 
-    customer = JSON.parse(response.body)["data"]
+    customer = JSON.parse(response.body)["data"]["attributes"]
 
     expect(response).to be_successful
-    expect(customer["id"].to_i).to eq(customer_1.id)
+    expect(customer["id"]).to eq(customer_1.id)
   end
 
   it "finds customer by first_name" do
@@ -84,11 +84,24 @@ describe "Customers API" do
     customer_2 = create(:customer, first_name: "name_2")
     customer_3 = create(:customer, first_name: "name_3")
 
-    get "/api/v1/customers/find?id=#{customer_1.first_name}"
+    get "/api/v1/customers/find?first_name=#{customer_1.first_name}"
 
-    customer = JSON.parse(response.body)["data"]
+    customer = JSON.parse(response.body)["data"]["attributes"]
 
     expect(response).to be_successful
     expect(customer["first_name"]).to eq(customer_1.first_name)
+  end
+
+  it "finds customer by last_name" do
+    customer_1 = create(:customer, last_name: "name_1")
+    customer_2 = create(:customer, last_name: "name_2")
+    customer_3 = create(:customer, last_name: "name_3")
+
+    get "/api/v1/customers/find?last_name=#{customer_1.last_name}"
+
+    customer = JSON.parse(response.body)["data"]["attributes"]
+
+    expect(response).to be_successful
+    expect(customer["last_name"]).to eq(customer_1.last_name)
   end
 end
