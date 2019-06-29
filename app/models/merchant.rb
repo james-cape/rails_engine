@@ -18,7 +18,7 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order('total_items DESC')
     .order(:id)
-    .limit(merchant_limit).to_a.reverse
+    .limit(merchant_limit)
   end
 
   def favorite_customer
@@ -29,6 +29,21 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order('total_transactions DESC')
     .first
+  end
+
+  def all_transactions_revenue
+    Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+    .joins(:invoice_items, :transactions)
+    .where(merchant_id: self.id)
+    .where(transactions: {result: "success"})[0]
+  end
+
+  def day_transactions_revenue(date)
+  Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+  .joins(:invoice_items, :transactions)
+  .where(merchant_id: self.id)
+  .where(transactions: {result: "success"})
+  .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)[0]
   end
 
   def customers_with_pending_invoices ### Boss Mode

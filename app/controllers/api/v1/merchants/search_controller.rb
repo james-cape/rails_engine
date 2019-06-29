@@ -4,7 +4,7 @@ class Api::V1::Merchants::SearchController < ApplicationController
   end
 
   def index
-    render json: MerchantSerializer.new(Merchant.where(search_params))
+    render json: MerchantSerializer.new(Merchant.where(search_params).order(:id))
   end
 
   private
