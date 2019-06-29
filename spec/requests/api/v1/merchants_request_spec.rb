@@ -90,4 +90,111 @@ describe "Merchants API" do
     assert_instance_of Hash, favorite_customer
     assert_equal customer_1.id, favorite_customer["id"].to_i
   end
+
+  it "gets item by id" do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    merchant_3 = create(:merchant)
+
+    get "/api/v1/merchants/find?id=#{merchant_1.id}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["attributes"]["id"].to_i).to eq(merchant_1.id)
+  end
+
+  it "gets item by name" do
+    merchant_1 = create(:merchant, name: "name_1")
+    merchant_2 = create(:merchant, name: "name_2")
+    merchant_3 = create(:merchant, name: "name_3")
+
+    get "/api/v1/merchants/find?name=#{merchant_1.name}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["attributes"]["name"]).to eq(merchant_1.name)
+  end
+
+  it "gets item by created_at" do
+    merchant_1 = create(:merchant, created_at: "2012-03-27T14:54:05.000Z")
+    merchant_2 = create(:merchant, created_at: "2012-04-27T14:54:05.000Z")
+    merchant_3 = create(:merchant, created_at: "2012-05-27T14:54:05.000Z")
+
+    get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["attributes"]["id"]).to eq(merchant_1.id)
+  end
+
+  it "gets item by created_at" do
+    merchant_1 = create(:merchant, created_at: "2012-03-27T14:54:05.000Z")
+    merchant_2 = create(:merchant, created_at: "2012-04-27T14:54:05.000Z")
+    merchant_3 = create(:merchant, created_at: "2012-05-27T14:54:05.000Z")
+
+    get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["attributes"]["id"]).to eq(merchant_1.id)
+  end
+
+  it "gets all items by id" do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    merchant_3 = create(:merchant)
+
+    get "/api/v1/merchants/find_all?id=#{merchant_1.id}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.class).to eq(Array)
+    expect(merchant[0]["attributes"]["id"].to_i).to eq(merchant_1.id)
+  end
+
+  it "gets all items by name" do
+    merchant_1 = create(:merchant, name: "name_1")
+    merchant_2 = create(:merchant, name: "name_1")
+    merchant_3 = create(:merchant, name: "name_2")
+
+    get "/api/v1/merchants/find_all?name=#{merchant_1.name}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.count).to eq(2)
+    expect(merchant[0]["attributes"]["id"]).to eq(merchant_1.id)
+    expect(merchant[1]["attributes"]["id"]).to eq(merchant_2.id)
+  end
+
+  it "gets all items by created_at" do
+    merchant_1 = create(:merchant, created_at: "2012-03-27T14:54:05.000Z")
+    merchant_2 = create(:merchant, created_at: "2012-03-27T14:54:05.000Z")
+    merchant_3 = create(:merchant, created_at: "2012-05-27T14:54:05.000Z")
+
+    get "/api/v1/merchants/find_all?created_at=#{merchant_1.created_at}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.count).to eq(2)
+    expect(merchant[0]["attributes"]["id"]).to eq(merchant_1.id)
+    expect(merchant[1]["attributes"]["id"]).to eq(merchant_2.id)
+  end
+
+  it "gets all items by updated_at" do
+    merchant_1 = create(:merchant, updated_at: "2012-03-27T14:54:05.000Z")
+    merchant_2 = create(:merchant, updated_at: "2012-03-27T14:54:05.000Z")
+    merchant_3 = create(:merchant, updated_at: "2012-05-27T14:54:05.000Z")
+
+    get "/api/v1/merchants/find_all?updated_at=#{merchant_1.updated_at}"
+
+    merchant = JSON.parse(response.body)["data"]
+    expect(response).to be_successful
+    expect(merchant.count).to eq(2)
+    expect(merchant[0]["attributes"]["id"]).to eq(merchant_1.id)
+    expect(merchant[1]["attributes"]["id"]).to eq(merchant_2.id)
+  end
 end
