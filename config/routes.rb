@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         get '/:id/merchant',      to: 'merchants#show'
         get '/find',              to: 'search#show'
         get '/find_all',          to: 'search#index'
+        get '/:id/best_day',      to: 'best_day#show'
       end
 
       namespace :merchants do
