@@ -1,5 +1,7 @@
 class Transaction < ApplicationRecord
   belongs_to :invoice
 
-  # scope :failed, -> { joins(:invoices).where(result: "failed")}
+  # scope :successful, -> { joins(:invoices).where(result: "failed")}
+
+  scope :successful, -> { where(result: "success") }
 end
