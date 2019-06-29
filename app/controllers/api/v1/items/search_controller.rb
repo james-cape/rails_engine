@@ -9,8 +9,8 @@ class Api::V1::Items::SearchController < ApplicationController
 
   private
 
-  def search_params
-    params[:unit_price] = (params[:unit_price].to_r * 100) if params[:unit_price]
-    params.permit(:id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at)
-  end
+    def search_params
+      params[:unit_price] = (params[:unit_price].to_r * 100) if params[:unit_price]
+      params.permit(:id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at)
+    end
 end

@@ -33,8 +33,10 @@ Rails.application.routes.draw do
         get '/find',              to: 'search#show'
         get '/find_all',          to: 'search#index'
         get '/:id/best_day',      to: 'best_day#show'
+        get '/most_items',        to: 'most_items#index'
+        get '/most_revenue',      to: 'most_revenue#index'
       end
-
+      
       namespace :merchants do
         get '/:id/items',                           to: 'items#index'
         get '/:id/invoices',                        to: 'invoices#index'

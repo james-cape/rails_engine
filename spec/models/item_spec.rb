@@ -34,5 +34,61 @@ RSpec.describe Item, type: :model do
       assert_equal "2012-04-24".to_datetime, item_2.find_best_day.best_day
       assert_equal "2012-04-23".to_datetime, item_3.find_best_day.best_day
     end
+
+    it "returns variable number of top items sold by quantity" do
+      customer_1 = create(:customer)
+      merchant_1 = create(:merchant)
+
+      item_1 = create(:item, merchant: merchant_1)
+      item_2 = create(:item, merchant: merchant_1)
+      item_3 = create(:item, merchant: merchant_1)
+
+      invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-23")
+      create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 1, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 2, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_1, item: item_3, quantity: 5, unit_price: 12345)
+
+      invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-24")
+      create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 4, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 4, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_2, item: item_3, quantity: 4, unit_price: 12345)
+
+      invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-25")
+      create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 3, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_3, item: item_2, quantity: 3, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_3, item: item_3, quantity: 3, unit_price: 12345)
+
+      expect(Item.items_by_most_sold(1)).to eq([item_3])
+      expect(Item.items_by_most_sold(2)).to eq([item_3, item_2])
+      expect(Item.items_by_most_sold(3)).to eq([item_3, item_2, item_1])
+    end
+
+    it "returns variable number of top items sold by revenue" do
+      customer_1 = create(:customer)
+      merchant_1 = create(:merchant)
+
+      item_1 = create(:item, merchant: merchant_1)
+      item_2 = create(:item, merchant: merchant_1)
+      item_3 = create(:item, merchant: merchant_1)
+
+      invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-23")
+      create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 2, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_1, item: item_2, quantity: 2, unit_price: 32345)
+      create(:invoice_item, invoice: invoice_1, item: item_3, quantity: 2, unit_price: 62345)
+
+      invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-24")
+      create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 4, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_2, item: item_2, quantity: 4, unit_price: 32345)
+      create(:invoice_item, invoice: invoice_2, item: item_3, quantity: 4, unit_price: 62345)
+
+      invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_1, created_at: "2012-04-25")
+      create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 3, unit_price: 12345)
+      create(:invoice_item, invoice: invoice_3, item: item_2, quantity: 3, unit_price: 32345)
+      create(:invoice_item, invoice: invoice_3, item: item_3, quantity: 3, unit_price: 62345)
+
+      expect(Item.items_by_most_revenue(1)).to eq([item_3])
+      expect(Item.items_by_most_revenue(2)).to eq([item_3, item_2])
+      expect(Item.items_by_most_revenue(3)).to eq([item_3, item_2, item_1])
+    end
   end
 end
