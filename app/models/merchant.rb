@@ -18,7 +18,7 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order('total_items DESC')
     .order(:id)
-    .limit(merchant_limit).to_a.reverse
+    .limit(merchant_limit)
   end
 
   def favorite_customer

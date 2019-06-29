@@ -72,9 +72,12 @@ RSpec.describe Merchant, type: :model do
       create(:transaction, invoice: invoice_2, result: "success")
       create(:transaction, invoice: invoice_3, result: "failed")
 
-      assert_equal [merchant_1, merchant_2], Merchant.most_items(2)
-      assert_equal [merchant_1, merchant_2], Merchant.most_items(3)
-      assert_equal [merchant_1, merchant_2], Merchant.most_items(4)
+      assert_equal merchant_2, Merchant.most_items(2)[0]
+      assert_equal merchant_1, Merchant.most_items(2)[1]
+
+      assert_equal merchant_2, Merchant.most_items(3)[0]
+      assert_equal merchant_1, Merchant.most_items(3)[1]
+      assert_nil Merchant.most_items(3)[2]
     end
 
     it "retrieves a merchant's most popular customer by successful transactions" do
