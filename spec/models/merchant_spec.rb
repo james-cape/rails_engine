@@ -6,7 +6,7 @@ RSpec.describe Merchant, type: :model do
     it {should have_many :items}
   end
 
-  describe "class methods" do
+  describe "methods" do
     it "retrieves merchants by most revenue" do
       customer_1 = create(:customer)
       merchant_1 = create(:merchant)
@@ -104,6 +104,70 @@ RSpec.describe Merchant, type: :model do
       create(:transaction, invoice: invoice_7, result: "success")
 
       assert_equal customer_1, merchant_1.favorite_customer
+    end
+
+    it "gets transaction revenue for a certain merchant for one date" do
+      customer_1 = create(:customer)
+      merchant_1 = create(:merchant)
+      merchant_2 = create(:merchant)
+
+      invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2013-03-27T14:54:05.000Z")
+      invoice_4 = create(:invoice, merchant: merchant_2, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_5 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+
+      create(:transaction, invoice: invoice_1, result: "success")
+      create(:transaction, invoice: invoice_2, result: "success")
+      create(:transaction, invoice: invoice_3, result: "success")
+      create(:transaction, invoice: invoice_4, result: "success")
+      create(:transaction, invoice: invoice_5, result: "failed")
+
+      item_1 = create(:item, merchant: merchant_1)
+
+      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_3 = create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_4 = create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_5 = create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
+
+      revenue_1 = (invoice_item_1.quantity * invoice_item_1.unit_price).to_r
+      revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price).to_r
+      valid_revenue = revenue_1 + revenue_2
+      date = "2012-03-27"
+      assert_equal valid_revenue, merchant_1.day_transactions_revenue(date).revenue
+    end
+
+    it "gets transaction revenue for a certain merchant for all dates" do
+      customer_1 = create(:customer)
+      merchant_1 = create(:merchant)
+      merchant_2 = create(:merchant)
+
+      invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2013-03-27T14:54:05.000Z")
+      invoice_4 = create(:invoice, merchant: merchant_2, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+      invoice_5 = create(:invoice, merchant: merchant_1, customer: customer_1, updated_at: "2012-03-27T14:54:05.000Z")
+
+      create(:transaction, invoice: invoice_1, result: "success")
+      create(:transaction, invoice: invoice_2, result: "success")
+      create(:transaction, invoice: invoice_3, result: "success")
+      create(:transaction, invoice: invoice_4, result: "success")
+      create(:transaction, invoice: invoice_5, result: "failed")
+
+      item_1 = create(:item, merchant: merchant_1)
+
+      invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_3 = create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_4 = create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
+      invoice_item_5 = create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
+
+      revenue_1 = (invoice_item_1.quantity * invoice_item_1.unit_price).to_r
+      revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price).to_r
+      revenue_3 = (invoice_item_3.quantity * invoice_item_3.unit_price).to_r
+      valid_revenue = revenue_1 + revenue_2 + revenue_3
+      assert_equal valid_revenue, merchant_1.all_transactions_revenue.revenue
     end
 
     it "retrieves a merchant's customers with pending orders" do ### Boss Mode
