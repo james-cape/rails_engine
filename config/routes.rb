@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         get '/most_items',        to: 'most_items#index'
         get '/most_revenue',      to: 'most_revenue#index'
       end
-      
+
       namespace :merchants do
         get '/:id/items',                           to: 'items#index'
         get '/:id/invoices',                        to: 'invoices#index'
@@ -47,6 +47,7 @@ Rails.application.routes.draw do
         get '/:id/customers_with_pending_invoices', to: 'customers_with_pending_invoices#index'
         get '/find',                                to: 'search#show'
         get '/find_all',                            to: 'search#index'
+        get '/:id/revenue',                         to: 'merchant_revenue#show'
       end
 
       namespace :transactions do
