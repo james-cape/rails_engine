@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :customers do
-        get '/:id/invoices',     to: 'invoices#index'
-        get '/:id/transactions', to: 'transactions#index'
-        get '/find',             to: 'search#show'
-        get '/find_all',         to: 'search#index'
+        get '/:id/invoices',          to: 'invoices#index'
+        get '/:id/transactions',      to: 'transactions#index'
+        get '/find',                  to: 'search#show'
+        get '/find_all',              to: 'search#index'
+        get '/:id/favorite_merchant', to: 'favorite_merchant#show'
       end
 
       namespace :invoice_items do
