@@ -31,6 +31,21 @@ class Merchant < ApplicationRecord
     .first
   end
 
+  def all_transactions_revenue
+    Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+    .joins(:invoice_items, :transactions)
+    .where(merchant_id: self.id)
+    .where(transactions: {result: "success"})[0]
+  end
+
+  def day_transactions_revenue(date)
+  Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+  .joins(:invoice_items, :transactions)
+  .where(merchant_id: self.id)
+  .where(transactions: {result: "success"})
+  .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)[0]
+  end
+
   def customers_with_pending_invoices ### Boss Mode
     # Customer.joins(invoices: :transactions)
     # .where(transactions: {result: "failed"})
