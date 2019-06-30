@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[Rales Engine Project Description](https://backend.turing.io/module3/projects/rails_engine)
 
-Things you may want to cover:
+Rales Engine imports six included CSV files (contained in /lib/data) and provides/tests JSON API endpoints
 
-* Ruby version
+#### Ruby Version:
+2.4.1p111 (2017-03-22 revision 58053)
 
-* System dependencies
+#### Ruby Version:
+Rails 5.2.3
 
-* Configuration
+#### How to run the test suite
+1. Clone github repo onto your local machine.
 
-* Database creation
+1. `$ bundle install`: Configure system dependencies
 
-* Database initialization
+1. `rake import:data`: Database creation and initialization
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+1. `$ rails s`: starts server
