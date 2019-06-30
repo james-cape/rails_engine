@@ -213,4 +213,16 @@ describe "Customers API" do
     expect(customers[0]["attributes"]["id"]).to eq(customer_1.id)
     expect(customers[1]["attributes"]["id"]).to eq(customer_2.id)
   end
+
+  it "gets a random customer" do
+    customer_1 = create(:customer)
+    customer_2 = create(:customer)
+    customer_3 = create(:customer)
+    customer_4 = create(:customer)
+
+    get "/api/v1/customers/random"
+
+    random_customer = JSON.parse(response.body)["data"]
+    expect(Customer.find(random_customer["attributes"]["id"])).to be_in([customer_1, customer_2, customer_3, customer_4])
+  end
 end

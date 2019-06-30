@@ -5,7 +5,7 @@ class Merchant < ApplicationRecord
   def self.most_revenue(merchant_limit)
     select('merchants.*, SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .joins(invoices: [:invoice_items, :transactions])
-    .where(transactions: {result: "success"})
+    .merge(Transaction.successful)
     .group(:id)
     .order('revenue DESC')
     .limit(merchant_limit)
@@ -14,7 +14,7 @@ class Merchant < ApplicationRecord
   def self.most_items(merchant_limit)
     select('merchants.*, SUM(invoice_items.quantity) AS total_items')
     .joins(invoices: [:invoice_items, :transactions])
-    .where(transactions: {result: "success"})
+    .merge(Transaction.successful)
     .group(:id)
     .order('total_items DESC')
     .order(:id)
@@ -24,7 +24,7 @@ class Merchant < ApplicationRecord
   def favorite_customer
     Customer.select('customers.*, COUNT(transactions.id) AS total_transactions')
     .joins(invoices: :transactions)
-    .where(transactions: {result: "success"})
+    .merge(Transaction.successful)
     .where("invoices.merchant_id = ?", self.id)
     .group(:id)
     .order('total_transactions DESC')
@@ -35,14 +35,14 @@ class Merchant < ApplicationRecord
     Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .joins(:invoice_items, :transactions)
     .where(merchant_id: self.id)
-    .where(transactions: {result: "success"})[0]
+    .merge(Transaction.successful)[0]
   end
 
   def day_transactions_revenue(date)
   Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
   .joins(:invoice_items, :transactions)
   .where(merchant_id: self.id)
-  .where(transactions: {result: "success"})
+  .merge(Transaction.successful)
   .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)[0]
   end
 

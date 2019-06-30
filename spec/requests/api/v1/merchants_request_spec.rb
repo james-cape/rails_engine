@@ -264,4 +264,16 @@ describe "Merchants API" do
     expect(merchant_revenue.class).to eq(Hash)
     expect(merchant_revenue["attributes"]["revenue"]).to eq("15.00")
   end
+
+  it "gets a random merchant" do
+    merchant_1 = create(:merchant)
+    merchant_2 = create(:merchant)
+    merchant_3 = create(:merchant)
+    merchant_4 = create(:merchant)
+
+    get "/api/v1/merchants/random"
+
+    random_merchant = JSON.parse(response.body)["data"]
+    expect(Merchant.find(random_merchant["attributes"]["id"])).to be_in([merchant_1, merchant_2, merchant_3, merchant_4])
+  end
 end
