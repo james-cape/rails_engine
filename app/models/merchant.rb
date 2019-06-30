@@ -31,7 +31,7 @@ class Merchant < ApplicationRecord
     .first
   end
 
-  def day_transactions_revenue(date = nil)
+  def transactions_revenue(date = nil)
     revenue_info = Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .joins(:invoice_items, :transactions)
     .where(merchant_id: self.id)
