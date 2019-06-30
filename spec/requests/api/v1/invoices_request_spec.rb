@@ -43,10 +43,10 @@ describe "Invoices API" do
 
     transactions = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 3, transactions.count
-    assert_equal transaction_1.id, transactions[0]["id"].to_i
-    assert_equal transaction_2.id, transactions[1]["id"].to_i
-    assert_equal transaction_3.id, transactions[2]["id"].to_i
+    expect(transactions.count).to eq(3)
+    expect(transactions[0]["id"].to_i).to eq(transaction_1.id)
+    expect(transactions[1]["id"].to_i).to eq(transaction_2.id)
+    expect(transactions[2]["id"].to_i).to eq(transaction_3.id)
   end
 
   it "gets all of an invoice's items" do
@@ -72,10 +72,10 @@ describe "Invoices API" do
 
     items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 3, items.count
-    assert_equal item_1.id, items[0]["id"].to_i
-    assert_equal item_2.id, items[1]["id"].to_i
-    assert_equal item_2.id, items[2]["id"].to_i
+    expect(items.count).to eq(3)
+    expect(items[0]["id"].to_i).to eq(item_1.id)
+    expect(items[1]["id"].to_i).to eq(item_2.id)
+    expect(items[2]["id"].to_i).to eq(item_2.id)
   end
 
   it "gets all of an invoice's invoice_items" do
@@ -101,10 +101,10 @@ describe "Invoices API" do
 
     invoice_items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 3, invoice_items.count
-    assert_equal invoice_item_1.id, invoice_items[0]["id"].to_i
-    assert_equal invoice_item_2.id, invoice_items[1]["id"].to_i
-    assert_equal invoice_item_3.id, invoice_items[2]["id"].to_i
+    expect(invoice_items.count).to eq(3)
+    expect(invoice_items[0]["id"].to_i).to eq(invoice_item_1.id)
+    expect(invoice_items[1]["id"].to_i).to eq(invoice_item_2.id)
+    expect(invoice_items[2]["id"].to_i).to eq(invoice_item_3.id)
   end
 
   it "gets an invoice's customer" do
@@ -135,8 +135,8 @@ describe "Invoices API" do
 
     merchant = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_instance_of Hash, merchant
-    assert_equal merchant_1.id, merchant["id"].to_i
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["id"].to_i).to eq(merchant_1.id)
   end
 
   it "gets revenue for all successful transactions by date" do
@@ -175,7 +175,7 @@ describe "Invoices API" do
 
     actual_revenue = JSON.parse(response.body)["data"]["attributes"]["total_revenue"]
     expect(response).to be_successful
-    assert_equal expected_revenue, actual_revenue
+    expect(actual_revenue).to eq(expected_revenue)
   end
 
   it "finds an invoice by id" do

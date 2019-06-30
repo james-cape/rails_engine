@@ -30,9 +30,9 @@ RSpec.describe Item, type: :model do
       create(:invoice_item, invoice: invoice_3, item: item_2, quantity: 3)
       create(:invoice_item, invoice: invoice_3, item: item_3, quantity: 3)
 
-      assert_equal "2012-04-24".to_datetime, item_1.find_best_day.best_day
-      assert_equal "2012-04-24".to_datetime, item_2.find_best_day.best_day
-      assert_equal "2012-04-23".to_datetime, item_3.find_best_day.best_day
+      expect(item_1.find_best_day.best_day).to eq("2012-04-24".to_datetime)
+      expect(item_2.find_best_day.best_day).to eq("2012-04-24".to_datetime)
+      expect(item_3.find_best_day.best_day).to eq("2012-04-23".to_datetime)
     end
 
     it "returns variable number of top items sold by quantity" do

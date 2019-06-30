@@ -43,7 +43,7 @@ RSpec.describe Invoice, type: :model do
       date = "2012-03-27"
 
       actual_revenue = Invoice.revenue(date).total_revenue
-      assert_equal expected_revenue, actual_revenue
+      expect(actual_revenue).to eq(expected_revenue)
     end
   end
 end
