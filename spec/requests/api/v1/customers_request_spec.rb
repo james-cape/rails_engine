@@ -37,9 +37,9 @@ describe "Customers API" do
 
     invoices = JSON.parse(response.body)
     expect(response).to be_successful
-    assert_equal invoices["data"].count, 2
-    assert_equal invoices["data"][0]["id"].to_i, invoice_1.id
-    assert_equal invoices["data"][1]["id"].to_i, invoice_2.id
+    expect(invoices["data"].count).to eq(2)
+    expect(invoices["data"][0]["id"].to_i).to eq(invoice_1.id)
+    expect(invoices["data"][1]["id"].to_i).to eq(invoice_2.id)
   end
 
   it "gets a single customer's transactions" do
@@ -61,9 +61,9 @@ describe "Customers API" do
 
     transactions = JSON.parse(response.body)
     expect(response).to be_successful
-    assert_equal transactions["data"].count, 2
-    assert_equal transactions["data"][0]["id"].to_i, transaction_1.id
-    assert_equal transactions["data"][1]["id"].to_i, transaction_2.id
+    expect(transactions["data"].count).to eq(2)
+    expect(transactions["data"][0]["id"].to_i).to eq(transaction_1.id)
+    expect(transactions["data"][1]["id"].to_i).to eq(transaction_2.id)
   end
 
   it "finds customer by id" do
