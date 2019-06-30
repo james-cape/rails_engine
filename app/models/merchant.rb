@@ -31,19 +31,15 @@ class Merchant < ApplicationRecord
     .first
   end
 
-  def all_transactions_revenue
-    Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
+  def day_transactions_revenue(date = nil)
+    revenue_info = Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
     .joins(:invoice_items, :transactions)
     .where(merchant_id: self.id)
-    .merge(Transaction.successful)[0]
-  end
+    .merge(Transaction.successful)
 
-  def day_transactions_revenue(date)
-  Invoice.select('SUM(invoice_items.quantity * invoice_items.unit_price) AS revenue')
-  .joins(:invoice_items, :transactions)
-  .where(merchant_id: self.id)
-  .merge(Transaction.successful)
-  .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)[0]
+    revenue_info = revenue_info.where("DATE_TRUNC('day', invoices.updated_at) = ?", date) if date
+
+    revenue_info[0]
   end
 
   def customers_with_pending_invoices ### Boss Mode
