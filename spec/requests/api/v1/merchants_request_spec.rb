@@ -34,10 +34,10 @@ describe "Merchants API" do
 
     items = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 3, items.count
-    assert_equal item_1.id, items[0]["id"].to_i
-    assert_equal item_2.id, items[1]["id"].to_i
-    assert_equal item_3.id, items[2]["id"].to_i
+    expect(items.count).to eq(3)
+    expect(items[0]["id"].to_i).to eq(item_1.id)
+    expect(items[1]["id"].to_i).to eq(item_2.id)
+    expect(items[2]["id"].to_i).to eq(item_3.id)
   end
 
   it "gets all of a merchant's invoices" do
@@ -54,10 +54,10 @@ describe "Merchants API" do
 
     invoices = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_equal 3, invoices.count
-    assert_equal invoice_1.id, invoices[0]["id"].to_i
-    assert_equal invoice_2.id, invoices[1]["id"].to_i
-    assert_equal invoice_3.id, invoices[2]["id"].to_i
+    expect(invoices.count).to eq(3)
+    expect(invoices[0]["id"].to_i).to eq(invoice_1.id)
+    expect(invoices[1]["id"].to_i).to eq(invoice_2.id)
+    expect(invoices[2]["id"].to_i).to eq(invoice_3.id)
   end
 
   it "gets a merchant's favorite customer by succussful transactions" do
@@ -87,8 +87,8 @@ describe "Merchants API" do
 
     favorite_customer = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_instance_of Hash, favorite_customer
-    assert_equal customer_1.id, favorite_customer["id"].to_i
+    expect(favorite_customer.class).to eq(Hash)
+    expect(favorite_customer["id"].to_i).to eq(customer_1.id)
   end
 
   it "gets item by id" do
@@ -114,7 +114,7 @@ describe "Merchants API" do
     merchant = JSON.parse(response.body)["data"]
     expect(response).to be_successful
     expect(merchant.class).to eq(Hash)
-    expect(merchant["attributes"]["name"]).to eq(merchant_1.name)
+    expect(merchant["attributes"]["id"].to_i).to eq(merchant_1.id)
   end
 
   it "gets item by created_at" do

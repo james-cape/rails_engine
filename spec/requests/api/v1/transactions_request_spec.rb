@@ -42,8 +42,8 @@ describe "Transactions API" do
 
     invoice = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_instance_of Hash, invoice
-    assert_equal invoice_1.id, invoice["id"].to_i
+    expect(invoice.class).to eq(Hash)
+    expect(invoice["id"].to_i).to eq(invoice_1.id)
   end
 
   it "gets a transaction by id" do

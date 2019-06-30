@@ -30,7 +30,7 @@ RSpec.describe Customer, type: :model do
       create(:transaction, invoice: invoice_6, result: "failed")
       create(:transaction, invoice: invoice_7, result: "success")
 
-      assert_equal customer_1, merchant_1.favorite_customer
+      expect(merchant_1.favorite_customer).to eq(customer_1)
     end
   end
 end

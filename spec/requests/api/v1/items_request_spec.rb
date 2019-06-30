@@ -48,10 +48,10 @@ describe "Items API" do
     invoice_items_sorted = invoice_items_unsorted.sort_by { |element| element["id"] }
 
     expect(response).to be_successful
-    assert_equal 3, invoice_items_sorted.count
-    assert_equal invoice_item_1.id, invoice_items_sorted[0]["id"].to_i
-    assert_equal invoice_item_2.id, invoice_items_sorted[1]["id"].to_i
-    assert_equal invoice_item_6.id, invoice_items_sorted[2]["id"].to_i
+    expect(invoice_items_sorted.count).to eq(3)
+    expect(invoice_items_sorted[0]["id"].to_i).to eq(invoice_item_1.id)
+    expect(invoice_items_sorted[1]["id"].to_i).to eq(invoice_item_2.id)
+    expect(invoice_items_sorted[2]["id"].to_i).to eq(invoice_item_6.id)
   end
 
   it "gets an item's merchant" do
@@ -65,8 +65,8 @@ describe "Items API" do
 
     merchant = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_instance_of Hash, merchant
-    assert_equal merchant_1.id, merchant["id"].to_i
+    expect(merchant.class).to eq(Hash)
+    expect(merchant["id"].to_i).to eq(merchant_1.id)
   end
 
   it "gets item by id" do
