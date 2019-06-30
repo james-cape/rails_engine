@@ -135,7 +135,7 @@ RSpec.describe Merchant, type: :model do
       revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price).to_r
       valid_revenue = revenue_1 + revenue_2
       date = "2012-03-27"
-      expect(merchant_1.day_transactions_revenue(date).revenue).to eq(valid_revenue)
+      expect(merchant_1.transactions_revenue(date).revenue).to eq(valid_revenue)
     end
 
     it "gets transaction revenue for a certain merchant for all dates" do
@@ -167,7 +167,7 @@ RSpec.describe Merchant, type: :model do
       revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price).to_r
       revenue_3 = (invoice_item_3.quantity * invoice_item_3.unit_price).to_r
       valid_revenue = revenue_1 + revenue_2 + revenue_3
-      expect(merchant_1.all_transactions_revenue.revenue).to eq(valid_revenue)
+      expect(merchant_1.transactions_revenue.revenue).to eq(valid_revenue)
     end
 
     it "retrieves a merchant's customers with pending orders" do ### Boss Mode

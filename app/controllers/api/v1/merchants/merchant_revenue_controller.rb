@@ -1,10 +1,9 @@
 class Api::V1::Merchants::MerchantRevenueController < ApplicationController
-
   def show
     if params[:date]
-      render json: RevenueCentsDollarsSerializer.new(Merchant.find(params[:id]).day_transactions_revenue(params[:date]))
+      render json: RevenueCentsDollarsSerializer.new(Merchant.find(params[:id]).transactions_revenue(params[:date]))
     else
-      render json: RevenueCentsDollarsSerializer.new(Merchant.find(params[:id]).all_transactions_revenue)
+      render json: RevenueCentsDollarsSerializer.new(Merchant.find(params[:id]).transactions_revenue)
     end
   end
 

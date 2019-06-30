@@ -217,11 +217,11 @@ describe "Merchants API" do
 
     item_1 = create(:item, merchant: merchant_1)
 
-    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_3 = create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_4 = create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_5 = create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
 
     date = "2012-03-27"
     get "/api/v1/merchants/#{merchant_1.id}/revenue?date=#{date}"
@@ -251,11 +251,11 @@ describe "Merchants API" do
 
     item_1 = create(:item, merchant: merchant_1)
 
-    invoice_item_1 = create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_2 = create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_3 = create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_4 = create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
-    invoice_item_5 = create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_1, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_2, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_3, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_4, item: item_1, quantity: 5, unit_price: 100)
+    create(:invoice_item, invoice: invoice_5, item: item_1, quantity: 5, unit_price: 100)
 
     get "/api/v1/merchants/#{merchant_1.id}/revenue"
 

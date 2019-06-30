@@ -17,4 +17,6 @@ Rails 5.2.3
 
 1. `rake import:data`: Database creation and initialization
 
+1. `bundle exec rspec`: runs test suite
+
 1. `$ rails s`: starts server
