@@ -7,7 +7,7 @@ Rales Engine imports six included CSV files (contained in /lib/data) and provide
 #### Ruby Version:
 2.4.1p111 (2017-03-22 revision 58053)
 
-#### Ruby Version:
+#### Rails Version:
 Rails 5.2.3
 
 #### How to run the test suite
