@@ -294,5 +294,17 @@ describe "Items API" do
     expect(item[1]["attributes"]["id"]).to eq(item_2.id)
   end
 
+  it "gets a random item" do
+    merchant_1 = create(:merchant)
 
+    item_1 = create(:item, merchant: merchant_1)
+    item_2 = create(:item, merchant: merchant_1)
+    item_3 = create(:item, merchant: merchant_1)
+    item_4 = create(:item, merchant: merchant_1)
+
+    get "/api/v1/items/random"
+
+    random_item = JSON.parse(response.body)["data"]
+    expect(Item.find(random_item["attributes"]["id"])).to be_in([item_1, item_2, item_3, item_4])
+  end
 end

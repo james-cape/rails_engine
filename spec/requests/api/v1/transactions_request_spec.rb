@@ -261,4 +261,20 @@ describe "Transactions API" do
     expect(transaction[0]["attributes"]["id"].to_i).to eq(transaction_1.id)
     expect(transaction[1]["attributes"]["id"].to_i).to eq(transaction_2.id)
   end
+
+  it "gets a random transaction" do
+    merchant_1 = create(:merchant)
+    customer_1 = create(:customer)
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    transaction_1 = create(:transaction, invoice: invoice_1)
+    transaction_2 = create(:transaction, invoice: invoice_1)
+    transaction_3 = create(:transaction, invoice: invoice_1)
+    transaction_4 = create(:transaction, invoice: invoice_1)
+
+    get "/api/v1/transactions/random"
+
+    random_transaction = JSON.parse(response.body)["data"]
+    expect(Transaction.find(random_transaction["attributes"]["id"])).to be_in([transaction_1, transaction_2, transaction_3, transaction_4])
+  end
 end

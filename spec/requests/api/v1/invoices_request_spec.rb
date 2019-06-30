@@ -377,4 +377,19 @@ describe "Invoices API" do
     expect(invoices[0]["attributes"]["id"]).to eq(invoice_1.id)
     expect(invoices[1]["attributes"]["id"]).to eq(invoice_2.id)
   end
+
+  it "gets a random invoice" do
+    merchant_1 = create(:merchant)
+    customer_1 = create(:customer)
+
+    invoice_1 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_2 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_3 = create(:invoice, merchant: merchant_1, customer: customer_1)
+    invoice_4 = create(:invoice, merchant: merchant_1, customer: customer_1)
+
+    get "/api/v1/invoices/random"
+
+    random_invoice = JSON.parse(response.body)["data"]
+    expect(Invoice.find(random_invoice["attributes"]["id"])).to be_in([invoice_1, invoice_2, invoice_3, invoice_4])
+  end
 end
