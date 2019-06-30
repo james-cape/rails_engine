@@ -119,8 +119,8 @@ describe "Invoices API" do
 
     customer = JSON.parse(response.body)["data"]
     expect(response).to be_successful
-    assert_instance_of Hash, customer
-    assert_equal customer_1.id, customer["id"].to_i
+    expect(customer.class).to eq(Hash)
+    expect(customer["id"].to_i).to eq(customer_1.id)
   end
 
   it "gets an invoice's merchant" do
