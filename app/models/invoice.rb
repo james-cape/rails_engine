@@ -11,4 +11,8 @@ class Invoice < ApplicationRecord
     .merge(Transaction.successful)
     .where("DATE_TRUNC('day', invoices.updated_at) = ?", date)[0]
   end
+
+  # def self.find_pending_invoices
+  #  In attempt to solve boss mode
+  # end
 end
