@@ -2,7 +2,7 @@
 
 [Rales Engine Project Description](https://backend.turing.io/module3/projects/rails_engine)
 
-Rales Engine imports six included CSV files (contained in /lib/data) and provides/tests JSON API endpoints
+Rales Engine imports six included CSV files (contained in /lib/data) and provides/tests JSON API endpoints)
 
 #### Ruby Version:
 2.4.1p111 (2017-03-22 revision 58053)
