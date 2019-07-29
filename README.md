@@ -1,8 +1,10 @@
 # README
 
-[Rales Engine Project Description](https://backend.turing.io/module3/projects/rails_engine)
+Welcome to Rales Engine! This project creates over 100 endpoints for API requests. Requests retrieve a variety of sales statistics using included CSVs.
 
-Rales Engine imports six included CSV files (contained in /lib/data) and provides/tests JSON API endpoints)
+This project practices API production using Rails and is tested with RSpec. All queries are done at the model level using ActiveRecord, and information is passed back via the Model-View-Controller design pattern.
+
+[Rales Engine Project Description](https://backend.turing.io/module3/projects/rails_engine)
 
 #### Ruby Version:
 2.4.1p111 (2017-03-22 revision 58053)
